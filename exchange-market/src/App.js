@@ -10,23 +10,66 @@ const { Header, Content,  Footer } = Layout;
 
 
 function App() {
-  const [content, setContent] = useState([]);
+  const [currency, setCurrency] = useState([]);
 
-  const fetchExchange = async () => {
+  const fetchBTC = async () => {
 	  const { data } = await axios.get(`https://satangcorp.com/api/v3/ticker/24hr`);
 	  const filteredData = data.filter((item) => {
-		  return item.symbol === "usdt_thb";
+		  return item.symbol === "btc_thb";
 	  })
-	  console.log(filteredData);
-	  setContent(filteredData);
+	  const showData = data.map((item) => 
+	  	<div className='exchange-box'>
+	  		<Text strong className='currency-title'>{item.symbol}</Text>
+	  		<br />
+	  		<Text strong className='currency-price'>{item.lastPrice}</Text>
+	  		<br />
+	  		<Text className='currency-volume' strong>Volume: {item.volume}</Text>
+ 		 </div>			
+	  )
+	  setCurrency(filteredData);
 	}
 
+  const fetchUSDT = async () => {
+	const { data } = await axios.get(`https://satangcorp.com/api/v3/ticker/24hr`);
+	const filteredUSDT = data.filter((item) => {
+		return item.symbol === "usdt_thb";
+	})
+	const showData = data.map((item) => 
+		<div className='exchange-box'>
+			<Text strong className='currency-title'>{item.symbol}</Text>
+			<br />
+			<Text strong className='currency-price'>{item.lastPrice}</Text>
+			<br />
+			<Text className='currency-volume' strong>Volume: {item.volume}</Text>
+		</div>			
+	)
+	setCurrency(filteredUSDT);
+  }
+
+  const fetchBUSD = async () => {
+	const { data } = await axios.get(`https://satangcorp.com/api/v3/ticker/24hr`);
+	const filteredBUSD = data.filter((item) => {
+		return item.symbol === "busd_thb";
+	})
+	const showData = data.map((item) => 
+		<div className='exchange-box'>
+			<Text strong className='currency-title'>{item.symbol}</Text>
+			<br />
+			<Text strong className='currency-price'>{item.lastPrice}</Text>
+			<br />
+			<Text className='currency-volume' strong>Volume: {item.volume}</Text>
+		</div>			
+	)
+	setCurrency(filteredBUSD);
+  }
+  
+
 	useEffect(() => {
-		fetchExchange();
+		fetchBTC();
+		fetchUSDT();
+		fetchBUSD();
 	}, []);
 
-
-	
   return (
 	  <div className='App'>
 		<Layout className='layout'>
@@ -44,22 +87,22 @@ function App() {
 				<Title>ราคาเหรียญคริปโทล่าสุด</Title>
 				<Row justify='center' align='middle'>
 					<Col span={4}>
-						<Button type='primary' size='large' style={{ margin: "0px 0px 16px 0px" }} >BTC/THB</Button>
+						<Button type='primary' size='large' style={{ margin: "0px 0px 16px 0px" }} onClick={fetchBTC} >BTC/THB</Button>
 						<br />
-						<Button type='primary' size='large' style={{ margin: "0px 0px 16px 0px" }} >BUSD/THB</Button>
+						<Button type='primary' size='large' style={{ margin: "0px 0px 16px 0px" }} onClick={fetchBUSD}  >BUSD/THB</Button>
 						<br />
-						<Button type='primary' size='large' >USDT/THB</Button>
+						<Button type='primary' size='large' onClick={fetchUSDT}  >USDT/THB</Button>
 						<br />
 					</Col>
 					<Col span={4}>
 						<Card style={{ width: 300, margin: "16px 0px 0px 0px" }}>
-						{content && content.map((ct) => 
+						{currency && currency.map((cc) => 
 								<div className='exchange-box'>
-									<Text strong className='currency-title'>{ct.symbol}</Text>
+									<Text strong className='currency-title'>{cc.symbol}</Text>
 									<br />
-									<Text strong className='currency-price'>{ct.lastPrice}</Text>
+									<Text strong className='currency-price'>{cc.lastPrice}</Text>
 									<br />
-									<Text className='currency-volume' strong>Volume: {ct.volume}</Text>
+									<Text className='currency-volume' strong>Volume: {cc.volume}</Text>
 								</div>													
 							)}
 						</Card>						
