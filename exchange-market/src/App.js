@@ -12,62 +12,20 @@ const { Header, Content,  Footer } = Layout;
 function App() {
   const [currency, setCurrency] = useState([]);
 
-  const fetchBTC = async () => {
+  const fetchCurrency = async (currency) => {
 	  const { data } = await axios.get(`https://satangcorp.com/api/v3/ticker/24hr`);
 	  const filteredData = data.filter((item) => {
-		  return item.symbol === "btc_thb";
+		  return item.symbol === currency;
 	  })
-	  const showData = data.map((item) => 
-	  	<div className='exchange-box'>
-	  		<Text strong className='currency-title'>{item.symbol}</Text>
-	  		<br />
-	  		<Text strong className='currency-price'>{item.lastPrice}</Text>
-	  		<br />
-	  		<Text className='currency-volume' strong>Volume: {item.volume}</Text>
- 		 </div>			
-	  )
+	  console.log(data);
 	  setCurrency(filteredData);
 	}
 
-  const fetchUSDT = async () => {
-	const { data } = await axios.get(`https://satangcorp.com/api/v3/ticker/24hr`);
-	const filteredUSDT = data.filter((item) => {
-		return item.symbol === "usdt_thb";
-	})
-	const showData = data.map((item) => 
-		<div className='exchange-box'>
-			<Text strong className='currency-title'>{item.symbol}</Text>
-			<br />
-			<Text strong className='currency-price'>{item.lastPrice}</Text>
-			<br />
-			<Text className='currency-volume' strong>Volume: {item.volume}</Text>
-		</div>			
-	)
-	setCurrency(filteredUSDT);
-  }
-
-  const fetchBUSD = async () => {
-	const { data } = await axios.get(`https://satangcorp.com/api/v3/ticker/24hr`);
-	const filteredBUSD = data.filter((item) => {
-		return item.symbol === "busd_thb";
-	})
-	const showData = data.map((item) => 
-		<div className='exchange-box'>
-			<Text strong className='currency-title'>{item.symbol}</Text>
-			<br />
-			<Text strong className='currency-price'>{item.lastPrice}</Text>
-			<br />
-			<Text className='currency-volume' strong>Volume: {item.volume}</Text>
-		</div>			
-	)
-	setCurrency(filteredBUSD);
-  }
-  
 
 	useEffect(() => {
-		fetchBTC();
-		fetchUSDT();
-		fetchBUSD();
+		setInterval(() => {
+			fetchCurrency();	
+		}, 5000);
 	}, []);
 
   return (
@@ -87,11 +45,11 @@ function App() {
 				<Title>ราคาเหรียญคริปโทล่าสุด</Title>
 				<Row justify='center' align='middle'>
 					<Col span={4}>
-						<Button type='primary' size='large' style={{ margin: "0px 0px 16px 0px" }} onClick={fetchBTC} >BTC/THB</Button>
+						<Button type='primary' size='large' style={{ margin: "0px 0px 16px 0px" }} onClick={fetchCurrency("btc_thb")} >BTC/THB</Button>
 						<br />
-						<Button type='primary' size='large' style={{ margin: "0px 0px 16px 0px" }} onClick={fetchBUSD}  >BUSD/THB</Button>
+						<Button type='primary' size='large' style={{ margin: "0px 0px 16px 0px" }} onClick={fetchCurrency("busd_thb")}   >BUSD/THB</Button>
 						<br />
-						<Button type='primary' size='large' onClick={fetchUSDT}  >USDT/THB</Button>
+						<Button type='primary' size='large' >USDT/THB</Button>
 						<br />
 					</Col>
 					<Col span={4}>
