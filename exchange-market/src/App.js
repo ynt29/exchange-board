@@ -49,7 +49,7 @@ function App() {
 						<br />
 						<Button type='primary' size='large' style={{ margin: "0px 0px 16px 0px" }} onClick={fetchCurrency("busd_thb")}   >BUSD/THB</Button>
 						<br />
-						<Button type='primary' size='large' >USDT/THB</Button>
+						<Button type='primary' size='large' onClick={fetchCurrency("usdt_thb")} >USDT/THB</Button>
 						<br />
 					</Col>
 					<Col span={4}>
